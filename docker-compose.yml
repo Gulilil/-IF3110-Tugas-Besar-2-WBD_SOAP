@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  soap:
+    container_name: wbd_jax_ws
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    build: .
+    networks:
+      - soap
+  db:
+    image: mysql:latest
+    container_name: wbd_soap
+    hostname: db-soap
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - soap
+volumes:
+  db:
+    driver: local
+networks:
+  soap:
+    driver: bridge
