@@ -1,6 +1,11 @@
 # IF3110 Tugas Besar 1 WBD_SOAP
 
 
+## To run :
+mvn clean package
+mvn compile
+java -cp target/java-project-1.0-SNAPSHOT.jar com.wbd_soap.App
+
 
 ## Getting started
 
