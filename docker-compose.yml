@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   soap:
     container_name: wbd_jax_ws
@@ -9,26 +9,25 @@ services:
     volumes:
       - .:/usr/src/app
     build: .
-    networks:
-      - soap
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     image: mysql:latest
     container_name: wbd_soap
-    hostname: db-soap
-    restart: always
-    env_file:
-      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
+      - MYSQL_USER=soap
+      - MYSQL_DATABASE=wbd_soap
     ports:
-      - "3306:3306"
-    expose:
-      - "3306"
+      - "3307:3306"
     volumes:
-      - ./db:/var/lib/mysql
-    networks:
-      - soap
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 volumes:
   db:
-    driver: local
-networks:
-  soap:
-    driver: bridge

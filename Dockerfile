@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . .
 EXPOSE 8001
 RUN mvn clean install
-ENTRYPOINT ["bash", "./scripts/init_server.sh"]
+ENTRYPOINT java -jar /app/target/service_soap-jar-with-dependencies.jar

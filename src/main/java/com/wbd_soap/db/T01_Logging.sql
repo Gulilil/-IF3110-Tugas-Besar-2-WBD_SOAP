@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS Logging (
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    description CHAR(255) NOT NULL,
+    ip CHAR(16) NOT NULL,
+    endpoint CHAR(255) NOT NULL,
+    requested_at TIMESTAMP NOT NULL
+);

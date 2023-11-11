@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-231.8109.175">
+    <data-source name="wbd_soap@localhost" uuid="cee83ac6-6eb7-40ad-bb9c-3a3f326b3360">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>soap</user-name>
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>
