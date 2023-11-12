@@ -5,32 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b21c38b-ad84-4cc8-9ff7-7fabf9394050" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/db/T01_Logging.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/db/T02_Reference.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Logging.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Reference.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/service/ReferenceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/db/T01_Logging.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/db/T01_Logging.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/db/T02_Reference.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/db/T02_Reference.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/wbd_soap/App.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/wbd_soap/model/Database.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/java-project-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.wbd_soap.AppTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.wbd_soap.AppTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/wbd_soap/AppTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Logging.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Logging.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Reference.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/model/Reference.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/service/ReferenceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/service/ReferenceService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,11 +90,23 @@
       <updated>1699470798374</updated>
       <workItem from="1699470799355" duration="3246000" />
       <workItem from="1699696901470" duration="3961000" />
-      <workItem from="1699707606044" duration="6308000" />
+      <workItem from="1699707606044" duration="6397000" />
+      <workItem from="1699786957479" duration="8192000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
