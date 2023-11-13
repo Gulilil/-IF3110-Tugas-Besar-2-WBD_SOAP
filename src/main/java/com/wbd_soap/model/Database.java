@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import javax.swing.plaf.nimbus.State;
@@ -19,9 +18,10 @@ public class Database {
             this.connection = DriverManager.getConnection(String.format("jdbc:mysql://host.docker.internal:%s/%s", System.getenv("MYSQL_PORT"), System.getenv("MYSQL_DATABASE")), System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASSWORD"));
             System.out.println("Successfully connect to Database");
 
-            // Only run if needed
-//            this.setupDatabase();
+//             Only run if needed
+            this.setupDatabase();
         } catch (Exception e){
+            e.printStackTrace();
             System.out.println("Failed connecting to MySQL Database");
         }
     }
@@ -66,13 +66,20 @@ public class Database {
     // Reference
     // ===========
 
-    public ResultSet getReferenceWithID(int id){
+    public Reference getReferenceWithID(int id){
         try {
             Statement stmt = this.connection.createStatement();
             String q = String.format("SELECT * FROM reference WHERE id = %s;", id);
             ResultSet res = stmt.executeQuery(q);
             if (res.next()){
-                return res;
+                Reference resultRef = new Reference(
+                        res.getInt("id"),
+                        res.getInt("anime_account_id"),
+                        res.getInt("forum_account_id"),
+                        res.getString("referral_code"),
+                        res.getInt("point")
+                        );
+                return resultRef;
             } else {
                 return null;
             }
@@ -82,47 +89,82 @@ public class Database {
         }
     }
 
-    public int getReferenceIDWithAnimeID(int anime_account_id){
+    public Reference getReferenceWithReferralCode(String ref_code){
+        try {
+            Statement stmt = this.connection.createStatement();
+            String q = String.format("SELECT * FROM reference WHERE referral_code = '%s';", ref_code);
+            ResultSet res = stmt.executeQuery(q);
+            if (res.next()){
+                Reference resultRef = new Reference(
+                        res.getInt("id"),
+                        res.getInt("anime_account_id"),
+                        res.getInt("forum_account_id"),
+                        res.getString("referral_code"),
+                        res.getInt("point")
+                );
+                return resultRef;
+            } else {
+                return null;
+            }
+        } catch (Exception e){
+            System.out.println("Checking Failed");
+            return null;
+        }
+    }
+
+    public Reference getReferenceIDWithAnimeID(int anime_account_id){
         try {
             Statement stmt = this.connection.createStatement();
             String q = String.format("SELECT * FROM reference WHERE anime_account_id = %s;", anime_account_id);
             ResultSet res = stmt.executeQuery(q);
             if (res.next()){
-                int id = res.getInt("id");
-                return id;
+                Reference resultRef = new Reference(
+                        res.getInt("id"),
+                        res.getInt("anime_account_id"),
+                        res.getInt("forum_account_id"),
+                        res.getString("referral_code"),
+                        res.getInt("point")
+                );
+                return resultRef;
             } else {
                 System.out.println("There's no such row with anime_account_id: "+ anime_account_id);
-                return 0;
+                return null;
             }
         } catch (Exception e){
             System.out.println("Checking Failed");
-            return -1;
+            return null;
         }
     }
 
-    public int getReferenceIDWithForumID(int forum_account_id){
+    public Reference getReferenceIDWithForumID(int forum_account_id){
         try {
             Statement stmt = this.connection.createStatement();
             String q = String.format("SELECT * FROM reference WHERE forum_account_id = %s;", forum_account_id);
             ResultSet res = stmt.executeQuery(q);
             if (res.next()){
-                int id = res.getInt("id");
-                return id;
+                Reference resultRef = new Reference(
+                        res.getInt("id"),
+                        res.getInt("anime_account_id"),
+                        res.getInt("forum_account_id"),
+                        res.getString("referral_code"),
+                        res.getInt("point")
+                );
+                return resultRef;
             } else {
                 System.out.println("There's no such row with forum_account_id: "+ forum_account_id);
-                return 0;
+                return null;
             }
         } catch (Exception e){
             System.out.println("Checking Failed");
-            return -1;
+            return null;
         }
     }
 
     public void insertReferenceDatabase(Reference reference){
         try {
             Statement stmt = this.connection.createStatement();
-            String q = String.format("INSERT INTO reference(anime_account_id, forum_account_id, referal_code, point) VALUES (%s,%s,'%s',%s);",
-                    reference.getAnimeAccountId(), reference.getForumAccountId() == null? "NULL" : reference.getForumAccountId(), reference.getReferalCode(), reference.getPoint());
+            String q = String.format("INSERT INTO reference(anime_account_id, forum_account_id, referral_code, point) VALUES (%s,%s,'%s',%s);",
+                    reference.getAnimeAccountId(), reference.getForumAccountId() == null || reference.getForumAccountId() == 0? "NULL" : reference.getForumAccountId(), reference.getReferalCode(), reference.getPoint());
             stmt.executeUpdate(q);
             System.out.println("Successfully insert a new Reference data");
         } catch (Exception e){
@@ -134,8 +176,8 @@ public class Database {
     public void updateReferenceDatabase(Reference reference){
         try {
             Statement stmt = this.connection.createStatement();
-            String q = String.format("UPDATE reference SET anime_account_id = %s, forum_account_id = %s, referal_code = '%s', point = %s WHERE id = %s;",
-                    reference.getAnimeAccountId(), reference.getForumAccountId() == null? "NULL" : reference.getForumAccountId(), reference.getReferalCode(),reference.getPoint(), reference.getId());
+            String q = String.format("UPDATE reference SET anime_account_id = %s, forum_account_id = %s, referral_code = '%s', point = %s WHERE id = %s;",
+                    reference.getAnimeAccountId(), reference.getForumAccountId() == null || reference.getForumAccountId() == 0? "NULL" : reference.getForumAccountId(), reference.getReferalCode(),reference.getPoint(), reference.getId());
             stmt.executeUpdate(q);
             System.out.println("Successfully update Reference data with id: "+ reference.getId());
         } catch (Exception e){

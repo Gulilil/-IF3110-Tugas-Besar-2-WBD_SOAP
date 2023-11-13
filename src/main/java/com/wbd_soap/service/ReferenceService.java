@@ -3,6 +3,8 @@ package com.wbd_soap.service;
 import com.sun.net.httpserver.HttpExchange;
 import com.wbd_soap.model.Database;
 import com.wbd_soap.model.Logging;
+import com.wbd_soap.model.Reference;
+import com.wbd_soap.utils.Randomizer;
 
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
@@ -15,13 +17,12 @@ import java.sql.Statement;
 @WebService
 public class ReferenceService {
     @Resource
-    private Database db = new Database();
+    private Database db;
     private WebServiceContext wsContext;
 
-//    public ReferenceService(){
-//        this.db = new Database();
-//        this.db.setupDatabase();
-//    }
+    public ReferenceService(){
+        this.db = new Database();
+    }
     @WebMethod
     public void insertNewLog(String desc){
         MessageContext msgContext = this.wsContext.getMessageContext();
@@ -59,7 +60,26 @@ public class ReferenceService {
 
     @WebMethod
     public String insertReference(int anime_id){
-        return "";
+        if (!checkAPIKey()){
+            return "Invalid API Key";
+        }
+        Reference refDataCheckAnime = db.getReferenceIDWithAnimeID(anime_id);
+        if (refDataCheckAnime != null){
+            String msg = "Data with anime_account_id: "+anime_id+" already exist";
+            return msg;
+        } else {
+            Randomizer r = new Randomizer();
+            String randRefCode = r.generateRandomWord(20);
+            Reference refDataCheckRef = db.getReferenceWithReferralCode(randRefCode);
+            while (refDataCheckRef != null){
+                randRefCode = r.generateRandomWord(20);
+                refDataCheckRef = db.getReferenceWithReferralCode(randRefCode);
+            }
+            Reference ref = new Reference(null, anime_id, null, randRefCode, 0 );
+            this.db.insertReferenceDatabase(ref);
+            String msg = "Successfully insert Data with anime_account_id: "+anime_id;
+            return msg;
+        }
     }
 
     @WebMethod
@@ -67,36 +87,92 @@ public class ReferenceService {
         if (!checkAPIKey()){
             return "Invalid API Key";
         }
-        int refId = db.getReferenceIDWithAnimeID(anime_id);
-        if (refId <= 0){
-            String msg = "Data with anime_id: "+anime_id+" does not exist";
+        Reference refDataCheckAnime = db.getReferenceIDWithAnimeID(anime_id);
+        if (refDataCheckAnime == null){
+            String msg = "Data with anime_account_id: "+anime_id+" does not exist";
             return msg;
         } else {
-            ResultSet res = db.getReferenceWithID(refId);
-            try {
-                int fid = res.getInt("forum_account_id");
-                if (res.wasNull()){
-                    // Update
-                    return "";
-                } else {
-                    // Occupied
-                    return "The account with anime_account_id: "+anime_id+" has been occupied";
-                }
-
-            } catch (Exception e){
-                return "Failed getting data";
+            Integer dataForumId = refDataCheckAnime.getForumAccountId();
+            if (dataForumId == 0 || dataForumId == null){
+                Reference ref = new Reference(
+                        refDataCheckAnime.getId(),
+                        anime_id,
+                        forum_id,
+                        refDataCheckAnime.getReferalCode(),
+                        refDataCheckAnime.getPoint()
+                );
+                this.db.updateReferenceDatabase(ref);
+                String msg = "Successfully link Data with anime_account_id: "+anime_id+" and forum_account_id: "+forum_id;
+                return msg;
+            } else {
+                String msg = "The account with anime_account_id: "+ anime_id + " has been occupied";
+                return msg;
             }
         }
     }
 
     @WebMethod
     public String updateReferenceUnlink(int forum_id, int anime_id){
-        return "";
+        if (!checkAPIKey()){
+            return "Invalid API Key";
+        }
+        Reference refDataCheckAnime = db.getReferenceIDWithAnimeID(anime_id);
+        if (refDataCheckAnime == null){
+            String msg = "Data with anime_account_id: "+anime_id+" does not exist";
+            return msg;
+        } else if (!refDataCheckAnime.getForumAccountId().equals(forum_id)){
+            String msg = "Invalid data detected";
+            return msg;
+        } else {
+            Integer dataForumId = refDataCheckAnime.getForumAccountId();
+            if (dataForumId == 0 || dataForumId == null){
+                String msg = "The account with anime_account_id: "+ anime_id + " and forum_account_id: "+ forum_id+ " has no link";
+                return msg;
+            } else {
+                Reference ref = new Reference(
+                        refDataCheckAnime.getId(),
+                        anime_id,
+                        null,
+                        refDataCheckAnime.getReferalCode(),
+                        refDataCheckAnime.getPoint()
+                );
+                this.db.updateReferenceDatabase(ref);
+                String msg = "Successfully unlink Data with forum_account_id: "+forum_id+" from anime_account_id: "+anime_id;
+                return msg;
+            }
+        }
     }
 
     @WebMethod
-    public String updateReferenceChangePoint(int forum_id, int anime_id, int num){
-        return "";
+    public String updateReferenceChangePoint(int forum_id, int anime_id, int numChange){
+        if (!checkAPIKey()){
+            return "Invalid API Key";
+        }
+        Reference refDataCheckAnime = db.getReferenceIDWithAnimeID(anime_id);
+        if (refDataCheckAnime == null){
+            String msg = "Data with anime_account_id: "+anime_id+" does not exist";
+            return msg;
+        } else if (!refDataCheckAnime.getForumAccountId().equals(forum_id)){
+            String msg = "Invalid data detected";
+            return msg;
+        } else {
+            Integer dataForumId = refDataCheckAnime.getForumAccountId();
+            if (dataForumId == 0 || dataForumId == null){
+                String msg = "The account with anime_account_id: "+ anime_id + " and forum_account_id: "+ forum_id+ " has no link";
+                return msg;
+            } else {
+                Reference ref = new Reference(
+                        refDataCheckAnime.getId(),
+                        anime_id,
+                        forum_id,
+                        refDataCheckAnime.getReferalCode() + numChange,
+                        refDataCheckAnime.getPoint()
+                );
+                this.db.updateReferenceDatabase(ref);
+                String msg = "Successfully change the point of Data with forum_account_id: "+forum_id+" and anime_account_id: "+anime_id;
+                return msg;
+            }
+        }
     }
 
 
