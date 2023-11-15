@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS logging (
     description CHAR(255) NOT NULL,
     ip CHAR(16) NOT NULL,
     endpoint CHAR(255) NOT NULL,
-    requested_at TIMESTAMP NOT NULL
+    requested_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

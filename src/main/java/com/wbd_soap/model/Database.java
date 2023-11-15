@@ -3,10 +3,9 @@ package com.wbd_soap.model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import javax.swing.plaf.nimbus.State;
@@ -15,11 +14,12 @@ public class Database {
     private Connection connection;
     public Database(){
         try {
-            this.connection = DriverManager.getConnection(String.format("jdbc:mysql://host.docker.internal:%s/%s", System.getenv("MYSQL_PORT"), System.getenv("MYSQL_DATABASE")), System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASSWORD"));
+            // For local connection
+            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/wbd_soap", "root", "password");
+            // For docker
+//            this.connection = DriverManager.getConnection(String.format("jdbc:mysql://%s:%s/%s", System.getenv("MYSQL_HOST") ,System.getenv("MYSQL_PORT"), System.getenv("MYSQL_DATABASE")), System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASSWORD"));
             System.out.println("Successfully connect to Database");
 
-//             Only run if needed
-            this.setupDatabase();
         } catch (Exception e){
             e.printStackTrace();
             System.out.println("Failed connecting to MySQL Database");
@@ -85,6 +85,54 @@ public class Database {
             }
         } catch (Exception e){
             System.out.println("Checking Failed");
+            return null;
+        }
+    }
+
+    public ArrayList<Reference> getAllReference(){
+        try {
+            Statement stmt = this.connection.createStatement();
+            String q = String.format("SELECT * FROM reference");
+            ResultSet res = stmt.executeQuery(q);
+            ArrayList<Reference> refs = new ArrayList<Reference>();
+            while (res.next()) {
+                Reference tempRef = new Reference(
+                        res.getInt("id"),
+                        res.getInt("anime_account_id"),
+                        res.getInt("forum_account_id"),
+                        res.getString("referral_code"),
+                        res.getInt("point")
+                );
+                refs.add(tempRef);
+            }
+            return refs;
+
+        } catch (Exception e){
+            System.out.println("Select operation Failed");
+            return null;
+        }
+    }
+
+    public ArrayList<Reference> getAllReferenceLimitOffset(Integer limit, Integer offset){
+        try {
+            Statement stmt = this.connection.createStatement();
+            String q = String.format("SELECT * FROM reference LIMIT %s OFFSET %s", limit, offset);
+            ResultSet res = stmt.executeQuery(q);
+            ArrayList<Reference> refs = new ArrayList<Reference>();
+            while (res.next()) {
+                Reference tempRef = new Reference(
+                        res.getInt("id"),
+                        res.getInt("anime_account_id"),
+                        res.getInt("forum_account_id"),
+                        res.getString("referral_code"),
+                        res.getInt("point")
+                );
+                refs.add(tempRef);
+            }
+            return refs;
+
+        } catch (Exception e){
+            System.out.println("Select operation Failed");
             return null;
         }
     }

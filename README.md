@@ -4,8 +4,8 @@
 ## To run :
 mvn clean package
 mvn compile
-java -cp target/java-project-1.0-SNAPSHOT.jar com.wbd_soap.App
-
+java --add-opens java.base/java.lang=ALL-UNNAMED -cp target/service_soap-jar-with-dependencies.jar com.wbd_soap.App
+// --illegal-access=warn
 
 ## Getting started
 

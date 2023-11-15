@@ -1,0 +1,6 @@
+com\wbd_soap\model\Database.class
+com\wbd_soap\App.class
+com\wbd_soap\utils\Randomizer.class
+com\wbd_soap\model\Logging.class
+com\wbd_soap\model\Reference.class
+com\wbd_soap\service\ReferenceService.class
