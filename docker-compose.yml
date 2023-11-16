@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     volumes:
-      - .:/usr/src/app
+      - .:/app
     build: .
     depends_on:
       db:

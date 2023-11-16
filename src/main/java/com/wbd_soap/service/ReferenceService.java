@@ -60,27 +60,6 @@ public class ReferenceService {
     }
 
     @WebMethod
-    public void connectToPhp(Integer anime_id, Integer forum_id, String ref_code, Integer point){
-        try {
-            String phpUrl = "http://localhost:8000/api/reference/create.php";
-            URL url = new URL(phpUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setInstanceFollowRedirects(false);
-            connection.setRequestMethod("POST");
-            OutputStream os = connection.getOutputStream();
-            String json = String.format("{\"anime_account_id\": %s, \"forum_acccount_id\": %s, \"referral_code\": \"%s\", \"point\": %s}",
-                    anime_id, forum_id, ref_code, point);
-            os.write(json.getBytes("utf-8"));
-            connection.getResponseCode();
-            connection.disconnect();
-        } catch (Exception e){
-            System.out.println(e);
-            System.out.println("Failed to connect to PHP");
-        }
-    }
-
-    @WebMethod
     public String insertReference(int anime_id){
         if (!checkAPIKey()){
             String msg = "Invalid API Key";
@@ -247,14 +226,70 @@ public class ReferenceService {
                         refDataCheckAnime.getId(),
                         anime_id,
                         forum_id,
-                        refDataCheckAnime.getReferalCode() + numChange,
-                        refDataCheckAnime.getPoint()
+                        refDataCheckAnime.getReferalCode(),
+                        refDataCheckAnime.getPoint() + numChange
                 );
                 db.updateReferenceDatabase(ref);
                 String msg = "Successfully change the point of Data with forum_account_id: "+forum_id+" and anime_account_id: "+anime_id;
                 this.insertNewLog("[UPDATE] "+msg);
                 return msg;
             }
+        }
+    }
+
+    @WebMethod
+    public String updateReferenceChangePointWithAnimeId(int anime_id, int numChange){
+        if (!checkAPIKey()){
+            String msg = "Invalid API Key";
+            this.insertNewLog("[UPDATE] "+msg);
+            return msg;
+        }
+        Database db = new Database();
+        Reference refDataCheckAnime = db.getReferenceIDWithAnimeID(anime_id);
+        if (refDataCheckAnime == null){
+            String msg = "Data with anime_account_id: "+anime_id+" does not exist";
+            this.insertNewLog("[UPDATE] "+msg);
+            return msg;
+        } else {
+                Reference ref = new Reference(
+                        refDataCheckAnime.getId(),
+                        anime_id,
+                        refDataCheckAnime.getForumAccountId(),
+                        refDataCheckAnime.getReferalCode(),
+                        refDataCheckAnime.getPoint() + numChange
+                );
+                db.updateReferenceDatabase(ref);
+                String msg = "Successfully change the point of Data with anime_account_id: "+anime_id;
+                this.insertNewLog("[UPDATE] "+msg);
+                return msg;
+        }
+    }
+
+    @WebMethod
+    public String updateReferenceChangePointWithForumId(int forum_id, int numChange){
+        if (!checkAPIKey()){
+            String msg = "Invalid API Key";
+            this.insertNewLog("[UPDATE] "+msg);
+            return msg;
+        }
+        Database db = new Database();
+        Reference refDataCheckForum = db.getReferenceIDWithForumID(forum_id);
+        if (refDataCheckForum == null){
+            String msg = "Data with forum_account_id: "+forum_id+" does not exist";
+            this.insertNewLog("[UPDATE] "+msg);
+            return msg;
+        } else {
+            Reference ref = new Reference(
+                    refDataCheckForum.getId(),
+                    refDataCheckForum.getAnimeAccountId(),
+                    forum_id,
+                    refDataCheckForum.getReferalCode(),
+                    refDataCheckForum.getPoint() + numChange
+            );
+            db.updateReferenceDatabase(ref);
+            String msg = "Successfully change the point of Data with forum_account_id: "+forum_id;
+            this.insertNewLog("[UPDATE] "+msg);
+            return msg;
         }
     }
 
@@ -311,7 +346,7 @@ public class ReferenceService {
                         ref.getPoint());
             }
             msg += "]}";
-            this.insertNewLog("[SELECT] Succesfully select limited reference data"+msg);
+            this.insertNewLog("[SELECT] Succesfully select limited reference data");
             return msg;
         }
     }
@@ -337,7 +372,7 @@ public class ReferenceService {
                     ref.getForumAccountId(),
                     ref.getReferalCode(),
                     ref.getPoint());
-            this.insertNewLog("[SELECT] "+msg);
+            this.insertNewLog("[SELECT] Successfully select data with anime_account_id: "+anime_id);
             return msg;
         }
 
@@ -363,7 +398,7 @@ public class ReferenceService {
                     ref.getForumAccountId(),
                     ref.getReferalCode(),
                     ref.getPoint());
-            this.insertNewLog("[SELECT] "+msg);
+            this.insertNewLog("[SELECT] Successfully select data with forum_account_id: " + forum_id);
             return msg;
         }
     }
