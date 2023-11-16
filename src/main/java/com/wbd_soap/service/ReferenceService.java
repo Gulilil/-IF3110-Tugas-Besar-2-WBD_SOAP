@@ -316,6 +316,7 @@ public class ReferenceService {
                         ref.getReferalCode(),
                         ref.getPoint());
             }
+            msg = msg.substring(0, msg.length() - 1); //to Delete last comma
             msg += "]}";
             this.insertNewLog("[SELECT] Succesfully select all reference data");
             return msg;
@@ -345,6 +346,7 @@ public class ReferenceService {
                         ref.getReferalCode(),
                         ref.getPoint());
             }
+            msg = msg.substring(0, msg.length() - 1); //to Delete last comma
             msg += "]}";
             this.insertNewLog("[SELECT] Succesfully select limited reference data");
             return msg;
