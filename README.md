@@ -75,7 +75,7 @@ java --add-opens java.base/java.lang=ALL-UNNAMED -cp target/service_soap-jar-wit
 5. The program is launched in url : `http://localhost:8001/ws/reference`
 
 
-## **Workload Distribution**[Reference.java](src%2Fmain%2Fjava%2Fcom%2Fwbd_soap%2Fmodel%2FReference.java)
+## **Workload Distribution**
 | Name                     | Student ID | Fungsionalitas                                                                                                                                                                                                       |
 |--------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Irfan                    | 10023176   |                                                                                                                                                                                                                      |
