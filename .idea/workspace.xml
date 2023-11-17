@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7b21c38b-ad84-4cc8-9ff7-7fabf9394050" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/wbd_soap/service/ReferenceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wbd_soap/service/ReferenceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/wbd_soap/service/ReferenceService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/wbd_soap/service/ReferenceService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/service_soap-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/service_soap-jar-with-dependencies.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/service_soap.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/service_soap.jar" afterDir="false" />
@@ -96,7 +98,10 @@
       <workItem from="1699980157309" duration="9457000" />
       <workItem from="1700021162685" duration="1462000" />
       <workItem from="1700052195050" duration="11170000" />
-      <workItem from="1700122616153" duration="14283000" />
+      <workItem from="1700122616153" duration="14652000" />
+      <workItem from="1700158551609" duration="11688000" />
+      <workItem from="1700180534196" duration="626000" />
+      <workItem from="1700198685761" duration="3028000" />
     </task>
     <servers />
   </component>

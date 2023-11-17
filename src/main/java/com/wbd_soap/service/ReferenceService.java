@@ -115,38 +115,38 @@ public class ReferenceService {
     }
 
     @WebMethod
-    public String updateReferenceEstablishLink(int forum_id, int anime_id){
+    public String updateReferenceEstablishLink(int forum_id, String ref_code){
         if (!checkAPIKey()){
             String msg = "Invalid API Key";
             this.insertNewLog("[UPDATE] "+msg);
             return msg;
         }
         Database db = new Database();
-        Reference refDataCheckAnime = db.getReferenceIDWithAnimeID(anime_id);
-        // Check if data anime_id exist
-        if (refDataCheckAnime == null){
-            String msg = "Data with anime_account_id: "+anime_id+" does not exist";
+        // Check if data exist
+        Reference refDataCheckReferral = db.getReferenceWithReferralCode(ref_code);
+        if (refDataCheckReferral == null){
+            String msg = "Referral code not found";
             this.insertNewLog("[UPDATE] "+msg);
             return msg;
         } else {
-            Reference refDataCheckForum = db.getReferenceIDWithForumID(forum_id);
             // Check if data forum_id already occupied somewhere
+            Reference refDataCheckForum = db.getReferenceIDWithForumID(forum_id);
             if (refDataCheckForum == null){
-                Integer dataForumId = refDataCheckAnime.getForumAccountId();
+                Integer dataForumId = refDataCheckReferral.getForumAccountId();
                 if (dataForumId == 0 || dataForumId == null){
                     Reference ref = new Reference(
-                            refDataCheckAnime.getId(),
-                            anime_id,
+                            refDataCheckReferral.getId(),
+                            refDataCheckReferral.getAnimeAccountId(),
                             forum_id,
-                            refDataCheckAnime.getReferalCode(),
-                            refDataCheckAnime.getPoint()
+                            ref_code,
+                            refDataCheckReferral.getPoint()
                     );
                     db.updateReferenceDatabase(ref);
-                    String msg = "Successfully link Data with anime_account_id: "+anime_id+" and forum_account_id: "+forum_id;
+                    String msg = "Successfully link Data forum_account_id: "+forum_id+" to anime_account_id: "+refDataCheckReferral.getAnimeAccountId();
                     this.insertNewLog("[UPDATE] "+msg);
                     return msg;
                 } else {
-                    String msg = "The account with anime_account_id: "+ anime_id + " has been occupied";
+                    String msg = "Invalid referral_code: "+ref_code;
                     this.insertNewLog("[UPDATE] "+msg);
                     return msg;
                 }
@@ -160,41 +160,30 @@ public class ReferenceService {
     }
 
     @WebMethod
-    public String updateReferenceUnlink(int forum_id, int anime_id){
+    public String updateReferenceUnlink(int forum_id){
         if (!checkAPIKey()){
             String msg = "Invalid API Key";
             this.insertNewLog("[UPDATE] "+msg);
             return msg;
         }
         Database db = new Database();
-        Reference refDataCheckAnime = db.getReferenceIDWithAnimeID(anime_id);
-        if (refDataCheckAnime == null){
-            String msg = "Data with anime_account_id: "+anime_id+" does not exist";
-            this.insertNewLog("[UPDATE] "+msg);
-            return msg;
-        } else if (!refDataCheckAnime.getForumAccountId().equals(forum_id)){
-            String msg = "Invalid data detected";
+        Reference refDataCheckForum = db.getReferenceIDWithForumID(forum_id);
+        if (refDataCheckForum == null){
+            String msg = "Data with forum_account_id: "+forum_id+" does not exist";
             this.insertNewLog("[UPDATE] "+msg);
             return msg;
         } else {
-            Integer dataForumId = refDataCheckAnime.getForumAccountId();
-            if (dataForumId == 0 || dataForumId == null){
-                String msg = "The account with anime_account_id: "+ anime_id + " and forum_account_id: "+ forum_id+ " has no link";
-                this.insertNewLog("[UPDATE] "+msg);
-                return msg;
-            } else {
-                Reference ref = new Reference(
-                        refDataCheckAnime.getId(),
-                        anime_id,
-                        null,
-                        refDataCheckAnime.getReferalCode(),
-                        refDataCheckAnime.getPoint()
-                );
-                db.updateReferenceDatabase(ref);
-                String msg = "Successfully unlink Data with forum_account_id: "+forum_id+" from anime_account_id: "+anime_id;
-                this.insertNewLog("[UPDATE] "+msg);
-                return msg;
-            }
+            Reference ref = new Reference(
+                    refDataCheckForum.getId(),
+                    refDataCheckForum.getAnimeAccountId(),
+                    null,
+                    refDataCheckForum.getReferalCode(),
+                    refDataCheckForum.getPoint()
+            );
+            db.updateReferenceDatabase(ref);
+            String msg = "Successfully unlink Data with forum_account_id: "+forum_id;
+            this.insertNewLog("[UPDATE] "+msg);
+            return msg;
         }
     }
 
@@ -377,7 +366,6 @@ public class ReferenceService {
             this.insertNewLog("[SELECT] Successfully select data with anime_account_id: "+anime_id);
             return msg;
         }
-
     }
 
     @WebMethod
